@@ -196,6 +196,21 @@
         padding: 3px 6px;
         border-radius: 50%;
       }
+      .reset-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+
+      .reset-btn:hover {
+        transform: scale(1.05);
+      }
     </style>
   </head>
   <body>
@@ -213,6 +228,13 @@
 
     <a href="{{ url_for('logout') }}" class="logout">Logout</a>
 
+    <a
+      href="/reset_month"
+      class="reset-btn"
+      onclick="return confirm('Are you sure you want to reset monthly data?');"
+    >
+      Reset Monthly Data
+    </a>
     <div class="bell" onclick="toggleNotifications()">
       🔔
       <span class="count">{{ notifications|length }}</span>

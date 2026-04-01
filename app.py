@@ -5,6 +5,7 @@ import re
 from datetime import date
 import os
 from werkzeug.utils import secure_filename
+from flask import redirect
 
 app = Flask(__name__)
 app.secret_key = "mess_secret_key"
@@ -92,6 +93,25 @@ CREATE TABLE IF NOT EXISTS feedback (
 @app.route("/")
 def home():
     return render_template("login.html")
+
+
+@app.route("/reset_month")
+def reset_month():
+    import sqlite3
+
+    conn = sqlite3.connect("mess.db")
+    cur = conn.cursor()
+
+    # Delete monthly data
+    cur.execute("DELETE FROM feedback")
+    cur.execute("DELETE FROM remarks")
+    cur.execute("DELETE FROM absentees")
+    cur.execute("DELETE FROM notifications")
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin_dashboard")
 
 
 
