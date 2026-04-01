@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mess Login</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        height: 100vh;
+
+        /* Replace gradient with image */
+        background-image: url("static/images/mess-bg.png"); /* your image path */
+        background-size: cover; /* makes image cover whole screen */
+        background-position: center; /* centers the image */
+        background-repeat: no-repeat; /* prevents repeating */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .login-box {
+        background: #ffffff;
+        padding: 30px;
+        width: 330px;
+        border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: blue; /* changed color to a bright orange */
+        font-weight: 900; /* make it bold */
+        font-family: "Georgia", serif; /* different font style */
+        font-style: italic; /* italic style */
+        font-size: 30px;
+        text-transform: uppercase; /* optional: makes text uppercase */
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #667eea;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+        background: linear-gradient(135deg, #43cea2, #185a9d);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 15px;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .footer-text {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #888;
+      }
+    </style>
+    <script>
+function toggleFields() {
+  let role = document.getElementById("role").value;
+
+  let rollField = document.getElementById("roll_no");
+  let userField = document.getElementById("username");
+
+  if (role === "student") {
+    rollField.style.display = "block";
+    userField.style.display = "none";
+  } else {
+    rollField.style.display = "none";
+    userField.style.display = "block";
+  }
+}
+</script>
+  </head>
+  <body>
+    <div class="login-box">
+      <h2>Mess Management Login</h2>
+
+      <form method="POST" action="/login">
+
+<select name="role" id="role" onchange="toggleFields()">
+  <option value="student">Student</option>
+  <option value="admin">Admin</option>
+</select>
+
+<input type="text" id="roll_no" name="roll_no" placeholder="Roll Number">
+
+<input type="text" id="username" name="username" placeholder="Admin Username" style="display:none;">
+
+<input type="password" name="password" placeholder="Password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+      <div class="footer-text">© Hostel Mess System</div>
+    </div>
+  </body>
+</html>

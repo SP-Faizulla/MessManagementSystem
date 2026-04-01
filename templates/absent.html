@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mark Absent</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #333;
+      }
+
+      h2 {
+        text-align: center;
+        color: #ffeb3b;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      }
+
+      form {
+        background: #ffffff;
+        max-width: 600px;
+        margin: auto;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      }
+
+      label {
+        display: block;
+        margin-top: 18px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      input[type="date"],
+      select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        transition:
+          border 0.3s,
+          box-shadow 0.3s;
+      }
+
+      input[type="date"]:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+      }
+
+      button {
+        margin-top: 25px;
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        border: none;
+        color: #ffffff;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      }
+
+      a {
+        display: block;
+        text-align: center;
+        margin-top: 22px;
+        color: #ffffff;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Mark Mess Absent</h2>
+
+    <form method="POST">
+      <label>Date</label>
+      <input type="date" name="date" required />
+
+      <label>Meal</label>
+      <select name="meal" required>
+        <option value="">Select Meal</option>
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
+      </select>
+
+      <button type="submit">Mark Absent</button>
+    </form>
+
+    <a href="/student">⬅ Back</a>
+  </body>
+</html>

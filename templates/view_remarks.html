@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Remarks</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f0f4f8; }
+    table { border-collapse: collapse; width: 100%; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+    th { background: #764ba2; color: #fff; }
+    tr:hover { background: #f1f1f1; }
+    img { max-width: 100px; max-height: 100px; }
+    a { display: inline-block; margin-top: 20px; text-decoration: none; color: #764ba2; }
+  </style>
+</head>
+<body>
+  <h2>Remarks / Complaints</h2>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Roll No</th>
+      <th>Message</th>
+      <th>Image</th>
+      <th>Date</th>
+    </tr>
+    {% for r in remarks %}
+    <tr>
+      <td>{{ r[0] }}</td>
+      <td>{{ r[1] }}</td>
+      <td>{{ r[2] }}</td>
+      <td>
+        {% if r[3] %}
+          <img src="{{ url_for('static', filename='uploads/' + r[3]) }}">
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>{{ r[4] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <a href="/admin">⬅ Back</a>
+</body>
+</html>

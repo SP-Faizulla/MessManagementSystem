@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+  <head>
+    <title>View Feedback</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: #f0f4f8;
+        padding: 20px;
+      }
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+      th {
+        background: #667eea;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background: #f7f7f7;
+      }
+      a.back {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #764ba2;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      a.back:hover {
+        background: #667eea;
+      }
+      .charts-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .chart-box {
+        background: white;
+        padding: 5px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        height: 220px;
+      }
+
+      .chart-box canvas {
+        width: 100% !important;
+        height: 180px !important;
+      }
+      .batch-container {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .batch-box {
+        background: white;
+        padding: 15px;
+        text-align: center;
+        border-radius: 10px;
+        font-weight: bold;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <h2>All Mess Feedback</h2>
+    <h3>Batch Wise Feedback Submission</h3>
+
+    <div class="batch-container">
+      <div class="batch-box" id="r20"></div>
+      <div class="batch-box" id="r21"></div>
+      <div class="batch-box" id="r22"></div>
+      <div class="batch-box" id="r23"></div>
+      <div class="batch-box" id="r24"></div>
+      <div class="batch-box" id="r25"></div>
+    </div>
+    <div class="charts-container">
+      <div class="chart-box"><canvas id="chart1"></canvas></div>
+      <div class="chart-box"><canvas id="chart2"></canvas></div>
+      <div class="chart-box"><canvas id="chart3"></canvas></div>
+      <div class="chart-box"><canvas id="chart4"></canvas></div>
+      <div class="chart-box"><canvas id="chart5"></canvas></div>
+
+      <div class="chart-box"><canvas id="chart6"></canvas></div>
+      <div class="chart-box"><canvas id="chart7"></canvas></div>
+      <div class="chart-box"><canvas id="chart8"></canvas></div>
+      <div class="chart-box"><canvas id="chart9"></canvas></div>
+      <div class="chart-box"><canvas id="chart10"></canvas></div>
+    </div>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Roll No</th>
+        <th>Month</th>
+        <th>Mess No</th>
+        <th>Timeliness</th>
+        <th>Cleanliness</th>
+        <th>Boiled Rice / Banana</th>
+        <th>Curries / Fries</th>
+        <th>Snacks / Tea / Coffee</th>
+        <th>Quantity</th>
+        <th>Courtesy</th>
+        <th>Uniforms / Gloves / Masks</th>
+        <th>Cooking as per Menu</th>
+        <th>Cleanliness Wash Area</th>
+        <th>Comment</th>
+      </tr>
+      {% for row in feedback %}
+      <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+        <td>{{ row[5] }}</td>
+        <td>{{ row[6] }}</td>
+        <td>{{ row[7] }}</td>
+        <td>{{ row[8] }}</td>
+        <td>{{ row[9] }}</td>
+        <td>{{ row[10] }}</td>
+        <td>{{ row[11] }}</td>
+        <td>{{ row[12] }}</td>
+        <td>{{ row[13] }}</td>
+        <td>{{ row[14] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <a href="/admin" class="back">← Back to Dashboard</a>
+    <script>
+
+      let feedbackData = {{ feedback | tojson | safe }};
+
+      let batchCount={
+      r20:0,
+      r21:0,
+      r22:0,
+      r23:0,
+      r24:0,
+      r25:0
+      };
+
+      feedbackData.forEach(row=>{
+
+      let roll=row[1].toLowerCase();
+      let batch=roll.substring(0,3);
+
+      if(batchCount[batch] !== undefined){
+      batchCount[batch]++;
+      }
+
+
+      });
+
+      document.getElementById("r20").innerHTML="R20 : "+batchCount.r20+" / 1000 submitted";
+      document.getElementById("r21").innerHTML="R21 : "+batchCount.r21+" / 1000 submitted";
+      document.getElementById("r22").innerHTML="R22 : "+batchCount.r22+" / 1000 submitted";
+      document.getElementById("r23").innerHTML="R23 : "+batchCount.r23+" / 1000 submitted";
+      document.getElementById("r24").innerHTML="R24 : "+batchCount.r24+" / 1000 submitted";
+      document.getElementById("r25").innerHTML="R25 : "+batchCount.r25+" / 1000 submitted";
+
+
+      function countValues(index){
+          let counts = {};
+
+          feedbackData.forEach(row=>{
+              let val = row[index];
+              counts[val] = (counts[val] || 0) + 1;
+          });
+
+          return counts;
+      }
+
+      function createPieChart(canvasId, dataIndex, title){
+
+          let counts = countValues(dataIndex);
+
+          new Chart(document.getElementById(canvasId), {
+              type: 'pie',
+              data: {
+                  labels: Object.keys(counts),
+                  datasets: [{
+                      data: Object.values(counts),
+                      backgroundColor:[
+                          "#ff6384",
+                          "#36a2eb",
+                          "#ffcd56",
+                          "#4bc0c0",
+                          "#9966ff"
+                      ]
+                  }]
+              },
+              options:{
+                  plugins:{
+                      title:{
+                          display:true,
+                          text:title
+                      }
+                  }
+              }
+          });
+
+      }
+
+      createPieChart("chart1",4,"Timeliness");
+      createPieChart("chart2",5,"Cleanliness");
+      createPieChart("chart3",6,"Boiled Rice / Banana");
+      createPieChart("chart4",7,"Curries / Fries");
+      createPieChart("chart5",8,"Snacks / Tea / Coffee");
+      createPieChart("chart6",9,"Quantity");
+      createPieChart("chart7",10,"Courtesy");
+      createPieChart("chart8",11,"Uniforms / Gloves / Masks");
+      createPieChart("chart9",12,"Cooking as per Menu");
+      createPieChart("chart10",13,"Cleanliness Wash Area");
+    </script>
+  </body>
+</html>

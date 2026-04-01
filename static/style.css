@@ -1,0 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  color: #333;
+  text-align: center;
+}
+
+/* Headings */
+h2 {
+  margin: 30px 0;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* Forms */
+form {
+  background: #ffffff;
+  padding: 25px;
+  width: 320px;
+  margin: 20px auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #667eea;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Cards (Dashboard) */
+.card {
+  background: white;
+  width: 260px;
+  padding: 18px;
+  margin: 15px auto;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.card a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+}
+
+/* Links */
+a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Textarea */
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+/* Admin cards */
+.admin-card {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  color: #333;
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Remarks / Complaint</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffeb3b;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    form {
+      background: #ffffff;
+      max-width: 700px;
+      margin: auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      resize: vertical;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      border: none;
+      color: #ffffff;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 22px;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Send Remarks / Complaint</h2>
+
+<form method="POST" enctype="multipart/form-data">
+
+  <label>Your Remark</label>
+  <textarea name="message" placeholder="Write your remark here" required></textarea>
+
+  <label>Upload Image (Optional)</label>
+  <input type="file" name="image" accept="image/*">
+
+  <button type="submit">Send</button>
+</form>
+
+<a href="/student">⬅ Back</a>
+
+</body>
+</html>
+

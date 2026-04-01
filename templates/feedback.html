@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monthly Feedback</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffeb3b;
+      margin-top: 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    p {
+      text-align: center;
+      color: #f1f1f1;
+      max-width: 900px;
+      margin: 15px auto 30px;
+      line-height: 1.6;
+    }
+
+    form {
+      background: #ffffff;
+      max-width: 900px;
+      margin: auto;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      font-weight: 600;
+      color: #333;
+      font-size: 15px;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: #6a11cb;
+      box-shadow: 0 0 8px rgba(106, 17, 203, 0.4);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 12px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #ffffff;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #ffd700;
+      text-decoration: underline;
+    }
+
+    select option {
+      color: #333;
+      font-weight: bold;
+    }
+
+    /* Colorful rating options */
+    .rating1 { background-color:#ff4d4d; color:white; }
+    .rating2 { background-color:#ff944d; color:white; }
+    .rating3 { background-color:#ffd11a; color:black; }
+    .rating4 { background-color:#99e600; color:black; }
+    .rating5 { background-color:#00b300; color:white; }
+  </style>
+</head>
+
+<body>
+
+<h1>CMS RKV</h1>
+<h2>PERFORMANCE INDEX – MESS FEEDBACK</h2>
+
+<p>
+To provide you with the highest standards of quality, service, and cleanliness, your opinions are extremely important 
+in evaluating the areas related to food. Thank you for taking a moment to give your feedback.
+</p>
+
+<form method="POST">
+
+  <label>Mess Number *</label>
+  <select name="mess_no" required>
+    <option value="">Select Mess</option>
+    <option>Mess 1</option>
+    <option>Mess 2</option>
+    <option>Mess 3</option>
+    <option>Mess 4</option>
+    <option>Mess 5</option>
+    <option>Mess 6</option>
+    <option>Mess 7</option>
+    <option>Mess 8</option>
+  </select>
+
+  <label>Month *</label>
+  <input type="month" name="month" required>
+
+  <!-- Question 1 -->
+  <label>1. Timeliness of the service *</label>
+  <select name="q1" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 2 -->
+  <label>2. Neatness / Cleanliness of surroundings *</label>
+  <select name="q2" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 3.i -->
+  <label>3.i Status of Boiled Rice / Banana *</label>
+  <select name="q3a" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 3.ii -->
+  <label>3.ii Taste of Curries / Fries *</label>
+  <select name="q3b" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 3.iii -->
+  <label>3.iii Snacks, Tea, Coffee and Breakfast *</label>
+  <select name="q3c" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 4 -->
+  <label>4. Quantity of food as per menu *</label>
+  <select name="q4" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 5 -->
+  <label>5. Courtesy of mess staff *</label>
+  <select name="q5" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 6 -->
+  <label>6. Uniforms, gloves & masks by staff *</label>
+  <select name="q6" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 7 -->
+  <label>7. Cooking as per menu *</label>
+  <select name="q7" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <!-- Question 8 -->
+  <label>8. Cleanliness of wash area *</label>
+  <select name="q8" required>
+    <option value="1" class="rating1">1 - Poor</option>
+    <option value="2" class="rating2">2 - Fair</option>
+    <option value="3" class="rating3">3 - Good</option>
+    <option value="4" class="rating4">4 - Very Good</option>
+    <option value="5" class="rating5">5 - Excellent</option>
+  </select>
+
+  <label>Additional Comments (Optional)</label>
+  <textarea name="comment" placeholder="Tell us more..."></textarea>
+
+  <button type="submit">Submit</button>
+</form>
+
+<a href="/student">← Back</a>
+
+</body>
+</html>
