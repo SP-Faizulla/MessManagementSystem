@@ -1,11 +1,10 @@
+
 from flask import Flask, render_template, request, redirect, url_for, session
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import sqlite3
 import re
-from datetime import date
 import os
 from werkzeug.utils import secure_filename
-from flask import redirect
 
 app = Flask(__name__)
 app.secret_key = "mess_secret_key"
@@ -33,29 +32,28 @@ def init_db():
     )
     """)
 
-    #feedback
+    # Feedback table
     cur.execute("""
-CREATE TABLE IF NOT EXISTS feedback (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    roll_no TEXT,
-    month TEXT,
-    mess_no TEXT,
-    q1 TEXT,
-    q2 TEXT,
-    q3a TEXT,
-    q3b TEXT,
-    q3c TEXT,
-    q4 TEXT,
-    q5 TEXT,
-    q6 TEXT,
-    q7 TEXT,
-    q8 TEXT,
-    comment TEXT
-)
-""")
+    CREATE TABLE IF NOT EXISTS feedback (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        roll_no TEXT,
+        month TEXT,
+        mess_no TEXT,
+        q1 TEXT,
+        q2 TEXT,
+        q3a TEXT,
+        q3b TEXT,
+        q3c TEXT,
+        q4 TEXT,
+        q5 TEXT,
+        q6 TEXT,
+        q7 TEXT,
+        q8 TEXT,
+        comment TEXT
+    )
+    """)
 
-
-    # Remarks table (with image)
+    # Remarks table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS remarks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,7 +64,7 @@ CREATE TABLE IF NOT EXISTS feedback (
     )
     """)
 
-    # Absentees table (date + meal)
+    # Absentees table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS absentees (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,34 +88,34 @@ CREATE TABLE IF NOT EXISTS feedback (
     con.close()
 
 # ---------------- ROUTES ---------------- #
+
 @app.route("/")
 def home():
     return render_template("login.html")
 
 
+# ---------- RESET MONTHLY DATA ---------- #
 @app.route("/reset_month")
 def reset_month():
-    import sqlite3
 
-    conn = sqlite3.connect("mess.db")
-    cur = conn.cursor()
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/")
 
-    # Delete monthly data
+    con = get_db()
+    cur = con.cursor()
+
     cur.execute("DELETE FROM feedback")
     cur.execute("DELETE FROM remarks")
     cur.execute("DELETE FROM absentees")
     cur.execute("DELETE FROM notifications")
 
-    conn.commit()
-    conn.close()
+    con.commit()
+    con.close()
 
-    return redirect("/admin_dashboard")
+    return redirect("/admin")
 
 
-
-# ---------- LOGIN ---------- 
-import re
-
+# ---------- LOGIN ---------- #
 @app.route("/login", methods=["POST"])
 def login():
     role = request.form["role"]
@@ -126,7 +124,6 @@ def login():
     if role == "student":
         roll_no = request.form["roll_no"]
 
-        # check roll format rxxxxxx
         if not re.match(r"^r\d{6}$", roll_no):
             return "Invalid Roll Number Format"
 
@@ -151,10 +148,10 @@ def login():
     return "Login Failed"
 
 
-
 # ---------- STUDENT DASHBOARD ---------- #
 @app.route("/student")
 def student_dashboard():
+
     if "role" not in session or session["role"] != "student":
         return redirect("/")
 
@@ -166,9 +163,11 @@ def student_dashboard():
 
     return render_template("student_dashboard.html", notifications=notifications)
 
+
 # ---------- ADMIN DASHBOARD ---------- #
 @app.route("/admin")
 def admin_dashboard():
+
     if "role" not in session or session["role"] != "admin":
         return redirect("/")
 
@@ -184,10 +183,12 @@ def admin_dashboard():
 # ---------- FEEDBACK ---------- #
 @app.route("/feedback", methods=["GET", "POST"])
 def feedback():
+
     if "role" not in session:
         return redirect("/")
 
     if request.method == "POST":
+
         month = request.form["month"]
         mess_no = request.form["mess_no"]
         q1 = request.form["q1"]
@@ -204,13 +205,18 @@ def feedback():
 
         con = get_db()
         cur = con.cursor()
+
         cur.execute(
-            """INSERT INTO feedback (
-                roll_no, month, mess_no,
-                q1, q2, q3a, q3b, q3c, q4, q5, q6, q7, q8, comment
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (session["roll_no"], month, mess_no, q1, q2, q3a, q3b, q3c, q4, q5, q6, q7, q8, comment)
+        """INSERT INTO feedback (
+        roll_no, month, mess_no,
+        q1, q2, q3a, q3b, q3c,
+        q4, q5, q6, q7, q8, comment
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (session["roll_no"], month, mess_no,
+        q1, q2, q3a, q3b, q3c,
+        q4, q5, q6, q7, q8, comment)
         )
+
         con.commit()
         con.close()
 
@@ -222,10 +228,12 @@ def feedback():
 # ---------- REMARKS ---------- #
 @app.route("/remarks", methods=["GET", "POST"])
 def remarks():
+
     if "role" not in session:
         return redirect("/")
 
     if request.method == "POST":
+
         message = request.form["message"]
         image = request.files.get("image")
         image_filename = None
@@ -238,10 +246,12 @@ def remarks():
 
         con = get_db()
         cur = con.cursor()
+
         cur.execute(
-            "INSERT INTO remarks VALUES (NULL, ?, ?, ?, ?)",
-            (session["roll_no"], message, image_filename, str(date.today()))
+        "INSERT INTO remarks VALUES (NULL, ?, ?, ?, ?)",
+        (session["roll_no"], message, image_filename, str(date.today()))
         )
+
         con.commit()
         con.close()
 
@@ -249,22 +259,27 @@ def remarks():
 
     return render_template("remarks.html")
 
+
 # ---------- ABSENT ---------- #
 @app.route("/absent", methods=["GET", "POST"])
 def absent():
+
     if "role" not in session:
         return redirect("/")
 
     if request.method == "POST":
+
         absent_date = request.form["date"]
         meal = request.form["meal"]
 
         con = get_db()
         cur = con.cursor()
+
         cur.execute(
-            "INSERT INTO absentees VALUES (NULL, ?, ?, ?)",
-            (session["roll_no"], absent_date, meal)
+        "INSERT INTO absentees VALUES (NULL, ?, ?, ?)",
+        (session["roll_no"], absent_date, meal)
         )
+
         con.commit()
         con.close()
 
@@ -272,36 +287,44 @@ def absent():
 
     return render_template("absent.html")
 
-# ---------- ADMIN VIEWS (Updated to render HTML tables) ---------- #
+
+# ---------- VIEW FEEDBACK ---------- #
 @app.route("/view_feedback")
 def view_feedback():
+
     if "role" not in session or session["role"] != "admin":
         return redirect("/")
 
     con = get_db()
     cur = con.cursor()
+
     cur.execute("SELECT * FROM feedback")
     data = cur.fetchall()
+
     con.close()
 
     return render_template("view_feedback.html", feedback=data)
 
 
-
+# ---------- VIEW REMARKS ---------- #
 @app.route("/view_remarks")
 def view_remarks():
+
     if "role" not in session or session["role"] != "admin":
         return redirect("/")
+
     con = get_db()
     cur = con.cursor()
+
     cur.execute("SELECT * FROM remarks")
     remarks = cur.fetchall()
+
     con.close()
+
     return render_template("view_remarks.html", remarks=remarks)
 
 
-from datetime import datetime, timedelta
-
+# ---------- VIEW ABSENTEES ---------- #
 @app.route("/view_absentees")
 def view_absentees():
 
@@ -348,16 +371,9 @@ def view_absentees():
     con.close()
 
     return render_template("view_absentees.html", results=results)
-    
-
-# ---------- LOGOUT ---------- #
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/")
 
 
-#--------------- Send Notifications route------------------#
+# ---------- SEND NOTIFICATION ---------- #
 @app.route("/send_notification", methods=["POST"])
 def send_notification():
 
@@ -377,7 +393,7 @@ def send_notification():
     cur.execute(
     "INSERT INTO notifications (sender, message, date) VALUES (?, ?, date('now'))",
     (sender, message)
-)
+    )
 
     con.commit()
     con.close()
@@ -388,9 +404,7 @@ def send_notification():
         return redirect("/student")
 
 
-
-#----------delete route--------------#
-
+# ---------- DELETE NOTIFICATION ---------- #
 @app.route("/delete_notification/<int:id>")
 def delete_notification(id):
 
@@ -401,12 +415,24 @@ def delete_notification(id):
     cur = con.cursor()
 
     cur.execute("DELETE FROM notifications WHERE id=?", (id,))
+
     con.commit()
     con.close()
 
     return redirect("/admin")
 
+
+# ---------- LOGOUT ---------- #
+@app.route("/logout")
+def logout():
+
+    session.clear()
+    return redirect("/")
+
+
 # ---------------- RUN ---------------- #
 if __name__ == "__main__":
+
     init_db()
     app.run(debug=True)
+
