@@ -22,6 +22,17 @@ def init_db():
     con = get_db()
     cur = con.cursor()
 
+
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS password_requests (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        roll_no TEXT,
+        new_password TEXT,
+        status TEXT
+    )
+    """)
+
     # Users table
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users (
@@ -120,21 +131,36 @@ def reset_month():
 def login():
     role = request.form["role"]
     password = request.form["password"]
-
     if role == "student":
         roll_no = request.form["roll_no"]
 
         if not re.match(r"^r\d{6}$", roll_no):
             return "Invalid Roll Number Format"
 
-        expected_password = roll_no + "@123"
+        con = get_db()
+        cur = con.cursor()
 
-        if password == expected_password:
-            session["roll_no"] = roll_no
-            session["role"] = "student"
-            return redirect(url_for("student_dashboard"))
+        cur.execute("SELECT password FROM users WHERE roll_no=?", (roll_no,))
+        row = cur.fetchone()
+
+        con.close()
+
+        if row:
+            # user already changed password
+            if password == row[0]:
+                session["roll_no"] = roll_no
+                session["role"] = "student"
+                return redirect("/student")
+            else:
+                return "Incorrect Password"
         else:
-            return "Incorrect Password"
+            # first time login
+            if password == roll_no + "@123":
+                session["roll_no"] = roll_no
+                session["role"] = "student"
+                return redirect("/student")
+            else:
+                return "Incorrect Password"
 
     elif role == "admin":
         username = request.form["username"]
@@ -146,6 +172,105 @@ def login():
             return "Invalid Admin Credentials"
 
     return "Login Failed"
+
+#------Change password -------#
+@app.route("/change_password", methods=["GET", "POST"])
+def change_password():
+
+    if "role" not in session or session["role"] != "student":
+        return redirect("/")
+
+    if request.method == "POST":
+        new_password = request.form["new_password"]
+
+        con = get_db()
+        cur = con.cursor()
+
+        cur.execute(
+            "INSERT INTO password_requests (roll_no, new_password, status) VALUES (?, ?, ?)",
+            (session["roll_no"], new_password, "pending")
+        )
+
+        con.commit()
+        con.close()
+
+        return "Request sent to admin"
+
+    return render_template("change_password.html")
+
+
+
+#-------admin view request----#
+@app.route("/password_requests")
+def password_requests():
+
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/")
+
+    con = get_db()
+    cur = con.cursor()
+
+    cur.execute("SELECT * FROM password_requests WHERE status='pending'")
+    data = cur.fetchall()
+
+    con.close()
+
+    return render_template("password_requests.html", requests=data)
+
+
+
+#------Approve password--------#
+@app.route("/approve_password/<int:id>")
+def approve_password(id):
+
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/")
+
+    con = get_db()
+    cur = con.cursor()
+
+    cur.execute("SELECT roll_no, new_password FROM password_requests WHERE id=?", (id,))
+    row = cur.fetchone()
+
+    if row:
+        roll_no, new_password = row
+
+        cur.execute("SELECT * FROM users WHERE roll_no=?", (roll_no,))
+        user = cur.fetchone()
+
+        if user:
+            cur.execute("UPDATE users SET password=? WHERE roll_no=?", (new_password, roll_no))
+        else:
+            cur.execute(
+                "INSERT INTO users (roll_no, password, role) VALUES (?, ?, ?)",
+                (roll_no, new_password, "student")
+            )
+
+        cur.execute("UPDATE password_requests SET status='approved' WHERE id=?", (id,))
+
+    con.commit()
+    con.close()
+
+    return redirect("/password_requests")
+
+
+
+#---------Reject password------------#
+@app.route("/reject_password/<int:id>")
+def reject_password(id):
+
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/")
+
+    con = get_db()
+    cur = con.cursor()
+
+    cur.execute("UPDATE password_requests SET status='rejected' WHERE id=?", (id,))
+
+    con.commit()
+    con.close()
+
+    return redirect("/password_requests")
 
 
 # ---------- STUDENT DASHBOARD ---------- #
